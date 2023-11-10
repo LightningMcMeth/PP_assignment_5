@@ -9,6 +9,10 @@ def encryptText(rawText, key):
 
     for char in rawText:
 
+        if char == '\n':
+            encryptedText += char
+            continue
+
         charToInt = ord(char)
 
         encryptedChar = chr(start + (charToInt - start + key) % range)
@@ -27,6 +31,11 @@ def decryptText(encryptedText, key):
     decryptedText = ''
 
     for char in encryptedText:
+
+        if char == '\n':
+            decryptedText += char
+            continue
+
         charToInt = ord(char)
         shifted = charToInt - key
 
@@ -39,19 +48,38 @@ def decryptText(encryptedText, key):
     return decryptedText
 
 
+def readFromFile(filepath):
+    with open(filepath, 'r', encoding='utf-8') as file:
+        return file.read()
+
+
+def writeToFile(filepath, text):
+    with open(filepath, 'w', encoding='utf-8') as file:
+        file.write(text)
+
+#456
 while True:
     cmd = int(input("choose command: "))
 
     if cmd == 1:
-        text = input("input text to encrypt: ")
+        inputPath = input("enter input filepath: ")
+        outputPath = input("enter output filepath: ")
         key = int(input("enter key: "))
 
+        text = readFromFile(inputPath)
         encryptedText = encryptText(text, key)
-        print(encryptedText)
+
+        writeToFile(outputPath, encryptedText)
 
     if cmd == 2:
-        text = input("input text to decrypt: ")
+        inputPath = input("enter input filepath: ")
+        outputPath = input("enter output filepath: ")
         key = int(input("enter key: "))
 
+        text = readFromFile(inputPath)
         decryptedText = decryptText(text, key)
-        print(decryptedText)
+
+        writeToFile(outputPath, decryptedText)
+
+    if cmd == 3:
+        exit()
