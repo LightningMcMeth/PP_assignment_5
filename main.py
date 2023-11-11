@@ -3,9 +3,9 @@ def encryptChar(char, key, start=32, end=126):
         return char
 
     range = end - start + 1
-    key = (key % range + range) % range
+    nKey = (key % range + range) % range
 
-    return chr(start + (ord(char) - start + key) % range)
+    return chr(start + (ord(char) - start + nKey) % range)
 
 
 def decryptChar(char, key, start=32, end=126):
@@ -13,11 +13,13 @@ def decryptChar(char, key, start=32, end=126):
         return char
 
     range = end - start + 1
-    key = (key % range + range) % range
+    nKey = (key % range + range) % range
 
-    shifted = ord(char) - key
+    shifted = ord(char) - nKey
     if shifted < start:
-        shifted += range
+        shiftedRange = shifted + range
+
+        return chr(start + (shiftedRange - start) % range)
 
     return chr(start + (shifted - start) % range)
 
